@@ -13,13 +13,13 @@
 <body>
 <header class="header"><div class="shell header-inner">
 <a class="brand" href="#inicio" aria-label="EcoFuel — início"><img src="logo.png" alt="EcoFuel" width="180" height="70"></a>
-<nav class="nav" aria-label="Navegação principal"><a href="#calculadora">Calculadora</a><a href="#como-funciona">Como funciona</a></nav>
+<nav class="nav" aria-label="Navegação principal"><a href="#calculadora">Calculadora</a><a href="#como-funciona">Como funciona</a><a href="painel.html">Meu painel</a></nav>
 </div></header>
 <section class="hero" id="inicio"><div class="shell hero-grid">
 <div><span class="eyebrow">Seu combustível, sua economia</span>
 <h1>Abasteça melhor. Economize em cada quilômetro.</h1>
 <p>Compare gasolina e etanol pelo consumo real do seu carro. Veja a opção mais econômica e quanto pode poupar, sem cadastro.</p>
-<a class="btn btn-light" href="#calculadora">Fazer comparação →</a></div>
+<div class="hero-actions"><a class="btn btn-light" href="#calculadora">Fazer comparação →</a><a class="btn btn-hero-secondary" href="painel.html">Meu painel de abastecimentos</a></div></div>
 <div class="hero-note" aria-hidden="true"><span class="symbol">↗</span><strong>Menor custo por km</strong><span>Decida com base no preço e rendimento do seu veículo, sem depender de uma regra fixa.</span></div>
 </div></section>
 <main class="main shell" id="calculadora">
@@ -34,7 +34,7 @@
 <div class="field"><label for="consumeGas">Consumo com gasolina (km/L)</label><input id="consumeGas" type="number" inputmode="decimal" min="0.001" step="any" placeholder="Ex.: 12,5" required></div>
 <div class="field"><label for="consumeEth">Consumo com etanol (km/L)</label><input id="consumeEth" type="number" inputmode="decimal" min="0.001" step="any" placeholder="Ex.: 8,8" required></div>
 </div>
-<p class="subheading">Projeções opcionais</p>
+<p id="priceSource" class="price-source" role="status" hidden></p><p class="subheading">Projeções opcionais</p>
 <div class="form-grid">
 <div class="field"><label for="tripKm">Distância da viagem (km)</label><input id="tripKm" type="number" inputmode="decimal" min="0.001" step="any" placeholder="Ex.: 350"></div>
 <div class="field"><label for="monthKm">Quilometragem mensal (km)</label><input id="monthKm" type="number" inputmode="decimal" min="0.001" step="any" placeholder="Ex.: 1200"></div>
@@ -73,5 +73,5 @@
 <article><span class="step">02 / COMPARE</span><h3>Custo por quilômetro</h3><p>Dividimos o preço por litro pelo consumo em km/L e comparamos a mesma distância.</p></article>
 <article><span class="step">03 / ECONOMIZE</span><h3>Decisão consciente</h3><p>Veja o preço de equilíbrio do etanol e a economia estimada. Compartilhe o resultado.</p></article>
 </section></main>
-<footer class="footer"><div class="shell footer-inner"><span>EcoFuel © 2026 · Compare com informação.</span><span><a href="politicadeprivacidade.html">Política de privacidade</a> · <a href="https://www.instagram.com/ecofuel.app" target="_blank" rel="noopener noreferrer">Instagram</a></span></div></footer>
+<footer class="footer"><div class="shell footer-inner"><span>EcoFuel © 2026 · Compare com informação.</span><span><a href="painel.html">Meu painel</a> · <a href="politicadeprivacidade.html">Política de privacidade</a> · <a href="https://www.instagram.com/ecofuel.app" target="_blank" rel="noopener noreferrer">Instagram</a></span></div></footer>
 </body></html>

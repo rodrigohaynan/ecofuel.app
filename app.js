@@ -157,10 +157,12 @@
     result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   });
   form.addEventListener('input', invalidate);
+  form.addEventListener('input', function () { byId('priceSource').hidden = true; });
   form.addEventListener('reset', function () {
     setTimeout(function () {
       invalidate();
       byId('remember').checked = true;
+      byId('priceSource').hidden = true;
     }, 0);
   });
 
@@ -324,4 +326,22 @@
       fill('consumeEth', legacyEth);
     }
   } catch (e) { /* site continua utilizavel sem armazenamento */ }
+  try {
+    var stationPrices = sessionStorage.getItem('ecofuel_prefill_prices_v1');
+    if (stationPrices) {
+      sessionStorage.removeItem('ecofuel_prefill_prices_v1');
+      var prices = JSON.parse(stationPrices);
+      if (prices && Number.isFinite(prices.gas) && Number.isFinite(prices.eth) &&
+          prices.gas > 0 && prices.eth > 0 && prices.gas <= 1000 && prices.eth <= 1000) {
+        fill('priceGas', prices.gas);
+        fill('priceEth', prices.eth);
+        var stamp = typeof prices.observed === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(prices.observed) ?
+          prices.observed.slice(8, 10) + '/' + prices.observed.slice(5, 7) + '/' + prices.observed.slice(0, 4) :
+          'data não informada';
+        byId('priceSource').textContent = 'Preços anotados por você em ' + stamp +
+          '. Valores não verificados: confira-os no posto antes de abastecer.';
+        byId('priceSource').hidden = false;
+      }
+    }
+  } catch (e) { /* a calculadora continua funcionando sem dados predefinidos */ }
 }());

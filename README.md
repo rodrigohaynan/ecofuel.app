@@ -1,36 +1,42 @@
 # EcoFuel
 
-Calculadora responsiva para comparar gasolina e etanol pelo **custo real por quilômetro**, sem exigir conta ou oferecer preços de postos não verificados.
+Comparador responsivo de gasolina e etanol pelo custo por quilômetro, com painel local de abastecimentos, sem exigir cadastro.
 
-## Funcionalidades desta atualização
+## Funcionalidades
 
-- Calculadora que considera preço por litro e consumo real de cada combustível (km/L).
-- Preço de equilíbrio do etanol: preço da gasolina × consumo com etanol ÷ consumo com gasolina.
-- Economia estimada em 100 km, por viagem e por quilometragem mensal.
-- Até 15 perfis de veículos e oito comparações no histórico local do navegador.
-- Compartilhamento do resumo de cálculo usando recurso nativo do aparelho, área de transferência ou seleção manual.
-- Layout responsivo com a logomarca original **logo.png**, sem qualquer edição da imagem.
-- Compatibilidade com as chaves antigas de consumo salvas pelo site anterior.
+- Calculadora de custo/km com preços e consumo real; preço de equilíbrio do etanol e projeção de economia por 100 km, viagem e mês.
+- Até 15 veículos e oito comparações salvas no navegador; compartilhamento de resultados.
+- Painel (painel.html): até 300 registros de abastecimentos com veículo, data, combustível, litros, preço, odômetro opcional e posto.
+- Visão geral de gastos, litros e preço médio ponderado; filtros por mês e veículo, histórico e gráfico de até seis meses com registros.
+- Até 100 postos favoritos com preços anotados manualmente, cidade e data da observação; opção de aproveitar esses preços na calculadora.
+- Busca externa de postos no Google Maps por cidade/bairro ou localização com permissão solicitada por ação do usuário.
+- Backup e restauração JSON de veículos, comparações, abastecimentos e postos. A restauração substitui os dados locais.
+- Interface responsiva preservando logo.png integralmente. Dados antigos de consumo são reaproveitados.
+
+**Os preços dos postos são informados pelo usuário e não são cotações em tempo real.** A ferramenta não mede emissões nem o consumo real com base em abastecimentos parciais.
 
 ## Executar e publicar
 
-Projeto estático: abra \`index.html\` com um servidor HTTP local (por exemplo, \`python3 -m http.server 8000\`) e acesse \`http://localhost:8000\`. Para publicar, use uma hospedagem estática apontando para a raiz do repositório. Os arquivos \`index.html\`, \`styles.css\`, \`app.js\`, \`logo.png\` e \`politicadeprivacidade.html\` precisam estar disponíveis na mesma pasta.
+Projeto estático. Abra um servidor HTTP local a partir da raiz do repositório, por exemplo com o comando python3 -m http.server 8000, e acesse http://localhost:8000. Publique todos os arquivos na mesma pasta:
 
-Nenhuma chave de API, banco de dados, localização ou conta de usuário é necessária nesta versão. Perfis e histórico ficam no navegador e **não sincronizam** entre dispositivos. Os resultados são estimativas baseadas nos dados fornecidos pelo motorista, não cotações externas.
+- index.html, styles.css, app.js, painel.html, painel.css, painel.js, logo.png e politicadeprivacidade.html.
 
-## Testes manuais sugeridos
+Sem necessidade de backend, conta de usuário ou chave de API. Perfis, comparações, abastecimentos e postos ficam no navegador, sem sincronização automática. O arquivo JSON de backup deve ser guardado pelo usuário.
 
-1. Compare R$ 6/L e 12 km/L com R$ 4/L e 9 km/L: gasolina R$ 0,500/km, etanol ≈ R$ 0,444/km e equilíbrio do etanol R$ 4,50/L.
-2. Troque para etanol a R$ 5/L: gasolina passa a ser mais econômica.
-3. Informe mesmo custo/km para ambos, depois tente preço ou consumo zero: deve indicar equivalência e impedir divisão por zero, respectivamente.
-4. Faça uma projeção de viagem e de quilometragem mensal e confira valores; limpe os campos.
-5. Salve, recarregue e exclua um veículo; salve e reutilize uma comparação; teste o compartilhamento no Android e desktop.
-6. Confira as páginas em 320 px, 375 px, 768 px e desktop, inclusive navegação por teclado.
+## Testes manuais antes de publicar
 
-## Próximas propostas (não implementadas)
+1. Compare gasolina R$ 6/L, 12 km/L, com etanol R$ 4/L, 9 km/L. Equilíbrio do etanol: R$ 4,50/L; etanol custa menos por km. Com etanol a R$ 5/L, gasolina custa menos.
+2. Registre 10 L a R$ 6/L e 20 L a R$ 5/L no mesmo veículo. Resumo: R$ 160,00, 30 L e preço médio ponderado ≈ R$ 5,33/L.
+3. Filtre abastecimentos por mês/veículo e exclua um registro. Confira o recálculo do resumo, histórico e gráfico.
+4. Salve um posto com dois preços e clique em 'Comparar estes preços'; a calculadora deve receber os valores e mostrar a data de anotação.
+5. Exporte um backup, adicione dados e restaure o arquivo. Confira se o conjunto anterior foi restaurado. Rejeite JSON inválido.
+6. Teste geolocalização concedida/negada, alternativa de busca por cidade e navegação em Android, iOS e desktop.
+7. Teste dimensões de 320 px, 375 px, 768 px e desktop, teclado e comunicação de erros.
 
-- Busca de postos próximos e comparação de preços **somente com fonte de dados confiável, atualizada e identificação da data da coleta**, com autorização de localização.
-- Relatórios de gastos por veículo e gráficos de consumo, se houver interesse do usuário em registrar abastecimentos.
-- PWA instalável com experiência offline, ícones adaptativos e testes de atualização.
-- Contas e sincronização entre dispositivos apenas se houver necessidade comprovada; exigiriam backend, autenticação e revisão da política de privacidade.
-- Conciliação de métricas de impacto ambiental somente com metodologia e fatores de emissão documentados; o comparador atual otimiza custo financeiro, não mede emissões.
+## Evoluções posteriores (não implementadas)
+
+- Fonte verificável de preços reais por posto, com data de coleta, autorização e tratamento de preços desatualizados.
+- Consumo medido (km/L) por ciclo de tanque cheio, com dados suficientes para estimativas confiáveis.
+- PWA instalável/offline, caso haja necessidade de uso sem internet.
+- Sincronização opcional entre dispositivos com backend, autenticação, política de privacidade e proteção de dados.
+- Métricas ambientais somente com metodologia e fatores de emissão transparentes.

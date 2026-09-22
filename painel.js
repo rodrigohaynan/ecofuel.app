@@ -276,8 +276,8 @@
       message('fillMessage', 'Não foi possível salvar no armazenamento deste navegador.', true);
       return;
     }
-    message('fillMessage', 'Abastecimento salvo neste dispositivo.');
     $('fillupForm').reset();
+    setTimeout(function () { message('fillMessage', 'Abastecimento salvo neste dispositivo.'); }, 0);
     refreshOptions();
     renderOverview();
   });
