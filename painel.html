@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#123e31">
+<meta name="description" content="Registre abastecimentos, acompanhe seus gastos e guarde os preços de seus postos favoritos no EcoFuel.">
+<title>Meu painel | EcoFuel</title>
+<link rel="icon" href="logo.png" type="image/png">
+<link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="painel.css">
+<script src="painel.js" defer></script>
+</head>
+<body>
+<header class="header"><div class="shell header-inner"><a class="brand" href="index.html" aria-label="EcoFuel — início"><img src="logo.png" alt="EcoFuel" width="180" height="70"></a>
+<nav class="nav" aria-label="Navegação principal"><a href="index.html#calculadora">Comparador</a><a href="#postos">Meus postos</a></nav></div></header>
+<section class="hero dashboard-hero"><div class="shell">
+<span class="eyebrow">Meu EcoFuel</span><h1>Seus abastecimentos, sua economia.</h1>
+<p>Registre cada abastecimento, acompanhe seus gastos e consulte os preços que você anotou em seus postos favoritos. Seus dados permanecem neste navegador.</p>
+<a href="#registrar" class="btn btn-light">Registrar abastecimento →</a>
+</div></section>
+<main class="shell dashboard-main">
+<nav class="dash-nav" aria-label="Seções do painel"><a href="#resumo">Visão geral</a><a href="#registrar">Novo abastecimento</a><a href="#historico">Histórico</a><a href="#postos">Meus postos</a></nav>
+<section class="dashboard-section" id="resumo" aria-labelledby="resumoTitle">
+<div class="section-heading"><h2 id="resumoTitle">Visão geral</h2><p>Gastos calculados a partir dos abastecimentos que você registrou.</p></div>
+<div class="panel">
+<div class="filters">
+<div class="field"><label for="filterVehicle">Veículo</label><select id="filterVehicle"><option value="">Todos os veículos</option></select></div>
+<div class="field"><label for="filterMonth">Mês</label><input id="filterMonth" type="month"></div>
+<button id="clearFilters" type="button" class="btn btn-text" style="align-self:end">Mostrar todos</button>
+</div>
+<div class="summary-grid">
+<div class="summary-card"><span>Total gasto</span><strong id="totalSpent">R$ 0,00</strong></div>
+<div class="summary-card"><span>Litros abastecidos</span><strong id="totalLiters">0 L</strong></div>
+<div class="summary-card"><span>Preço médio pago por litro</span><strong id="avgPrice">—</strong></div>
+<div class="summary-card"><span>Abastecimentos</span><strong id="totalEntries">0</strong></div>
+</div>
+<div class="divider-top">
+<h3>Gastos ao longo dos meses</h3><p class="muted">Até seis meses com registros, considerando o veículo selecionado.</p>
+<div id="expenseChart" class="chart" role="img" aria-label="Gastos mensais em combustíveis"></div>
+<p id="chartEmpty" class="dash-empty" hidden>Nenhum abastecimento cadastrado para exibir o gráfico.</p>
+</div>
+</div>
+</section>
+<div class="dashboard-grid dashboard-section" id="registrar">
+<section class="panel" aria-labelledby="entryTitle"><h3 id="entryTitle">Registrar abastecimento</h3>
+<p class="panel-desc">Informe os dados do comprovante. O valor total será calculado automaticamente.</p>
+<form id="fillupForm" novalidate>
+<div class="dash-form">
+<div class="field"><label for="fillDate">Data</label><input id="fillDate" type="date" required></div>
+<div class="field"><label for="fillVehicle">Veículo</label><input id="fillVehicle" list="savedVehicles" maxlength="60" placeholder="Ex.: Meu carro" required><datalist id="savedVehicles"></datalist></div>
+<div class="field"><label for="fillFuel">Combustível</label><select id="fillFuel" required><option value="gasolina">Gasolina</option><option value="etanol">Etanol</option></select></div>
+<div class="field"><label for="fillStation">Posto (opcional)</label><input id="fillStation" list="savedStations" maxlength="80" placeholder="Nome do posto"><datalist id="savedStations"></datalist></div>
+<div class="field"><label for="fillLiters">Litros abastecidos</label><input id="fillLiters" inputmode="decimal" type="number" step="any" min="0.001" placeholder="Ex.: 35,8" required></div>
+<div class="field"><label for="fillPrice">Preço por litro (R$)</label><input id="fillPrice" inputmode="decimal" type="number" step="any" min="0.001" placeholder="Ex.: 5,89" required></div>
+<div class="field"><label for="fillOdometer">Odômetro (km, opcional)</label><input id="fillOdometer" inputmode="decimal" type="number" step="any" min="0" placeholder="Ex.: 42350"></div>
+<div class="field"><label for="fillTotal">Total estimado (R$)</label><input id="fillTotal" readonly aria-describedby="totalNote" placeholder="Preencha litros e preço"></div>
+</div>
+<p id="totalNote" class="dash-footnote">O total usa o preço e a quantidade informados. Confira com seu comprovante; pode haver diferença de arredondamento.</p>
+<p id="fillMessage" class="dash-message" role="status" hidden></p>
+<div class="dash-actions"><button class="btn btn-primary" type="submit">Salvar abastecimento</button><button class="btn btn-text" type="reset">Limpar campos</button></div>
+</form>
+</section>
+<aside class="panel" aria-labelledby="backupTitle"><h3 id="backupTitle">Backup dos seus dados</h3>
+<p class="panel-desc">Perfis e comparações da calculadora, abastecimentos e postos favoritos são armazenados neste navegador e não são sincronizados automaticamente.</p>
+<div class="dash-toolbar"><button class="btn btn-outline" id="exportData" type="button">Baixar backup JSON</button>
+<label class="btn btn-text" for="importData">Restaurar backup</label><input class="visually-hidden" id="importData" type="file" accept=".json,application/json" aria-label="Selecionar arquivo JSON para restaurar"></div>
+<p id="backupMessage" class="dash-message" role="status" hidden></p>
+<p class="dash-footnote">Restaurar substitui os dados locais do EcoFuel pelos do arquivo. Confira o conteúdo e mantenha o backup em local seguro.</p>
+</aside>
+</div>
+<section class="dashboard-section" id="historico" aria-labelledby="historyTitle">
+<div class="section-heading"><h2 id="historyTitle">Histórico de abastecimentos</h2><p>Registros do veículo e mês selecionados na visão geral.</p></div>
+<div class="panel">
+<p id="fillEmpty" class="dash-empty">Nenhum abastecimento registrado com os filtros atuais.</p>
+<ol id="fillList" class="dash-list" aria-label="Abastecimentos salvos"></ol>
+<p id="historyMessage" class="dash-message" role="status" hidden></p>
+</div>
+</section>
+<section class="dashboard-section" id="postos" aria-labelledby="stationsTitle">
+<div class="section-heading"><h2 id="stationsTitle">Meus postos favoritos</h2><p>Registre preços que você observou, com data e local. Valores não são cotações em tempo real.</p></div>
+<p class="dash-note"><strong>Origem dos dados:</strong> os preços abaixo são informados por você, não verificados pelo EcoFuel. Confira-os no posto antes de abastecer.</p>
+<div class="dashboard-grid">
+<section class="panel" aria-labelledby="stationFormTitle"><h3 id="stationFormTitle">Adicionar posto e preços</h3>
+<p class="panel-desc">Cadastre o posto e a data em que conferiu o preço. Informe um ou ambos os combustíveis.</p>
+<form id="stationForm" novalidate>
+<div class="dash-form">
+<div class="field wide"><label for="stationName">Nome do posto</label><input id="stationName" type="text" maxlength="80" required placeholder="Ex.: Posto da Avenida"></div>
+<div class="field"><label for="stationCity">Cidade/UF</label><input id="stationCity" type="text" maxlength="80" required placeholder="Ex.: Campo Grande/MS"></div>
+<div class="field"><label for="stationObserved">Data da consulta</label><input id="stationObserved" type="date" required></div>
+<div class="field"><label for="stationGas">Gasolina (R$/L)</label><input id="stationGas" type="number" inputmode="decimal" min="0.001" step="any" placeholder="Opcional"></div>
+<div class="field"><label for="stationEth">Etanol (R$/L)</label><input id="stationEth" type="number" inputmode="decimal" min="0.001" step="any" placeholder="Opcional"></div>
+</div>
+<p id="stationMessage" class="dash-message" role="status" hidden></p>
+<div class="dash-actions"><button class="btn btn-primary" type="submit">Salvar posto</button><button class="btn btn-text" type="reset">Limpar campos</button></div>
+</form>
+</section>
+<aside class="panel" aria-labelledby="nearbyTitle"><h3 id="nearbyTitle">Encontrar postos próximos</h3>
+<p class="panel-desc">Abra uma busca de postos em um serviço de mapas externo. O EcoFuel não coleta preços desse serviço.</p>
+<button id="nearbyStations" class="btn btn-outline" type="button">Buscar usando minha localização</button>
+<p class="dash-footnote">Sua localização será solicitada somente após clicar no botão. Você pode negar a permissão.</p>
+<div class="field divider-top"><label for="manualLocation">Ou busque por cidade/bairro</label><input id="manualLocation" maxlength="100" placeholder="Ex.: Centro, Campo Grande - MS"></div>
+<button id="searchLocation" class="btn btn-text" style="margin-top:10px" type="button">Abrir busca por local</button>
+<p id="locationMessage" class="dash-message" role="status" hidden></p>
+</aside>
+</div>
+<div class="panel dashboard-section"><h3>Postos salvos</h3><p class="panel-desc">Registros locais; preços de datas anteriores podem estar desatualizados.</p>
+<p id="stationEmpty" class="dash-empty">Nenhum posto salvo neste dispositivo.</p>
+<ol id="stationList" class="dash-list" aria-label="Postos favoritos"></ol>
+</div>
+</section>
+</main>
+<footer class="footer"><div class="shell footer-inner"><span>EcoFuel © 2026 · Seus dados, suas escolhas.</span><span><a href="index.html">Calculadora</a> · <a href="politicadeprivacidade.html">Política de privacidade</a></span></div></footer>
+</body>
+</html>
